@@ -1,0 +1,77 @@
+[
+    {
+        "user_id": 1,
+        "email": "fake@fake.com",
+        "first_name": "George",
+        "last_name": "Doe",
+        "username": "FlamesOfSacrifice",
+        "faction": "DeathGuard",
+        "password": "password1234",
+        "email_verified": true,
+        "last_ip": "1234.123.23",
+        "posts": {
+            "discussions": [
+                1, 10010
+            ],
+            "social": [
+                2, 20020
+            ]
+        }
+    },
+    {
+        "user_id": 2,
+        "email": "fake2@fake.com",
+        "first_name": "Jake",
+        "last_name": "Doe",
+        "username": "PutridWarlord",
+        "faction": "Salamanders",
+        "password": "password56789",
+        "email_verified": true,
+        "last_ip": "1234.123.23",
+        "posts": {
+            "discussions": [
+            ],
+            "social": [
+                3, 30020
+            ]
+        }
+    },
+    {
+        "user_id": 3,
+        "email": "fake3@fake.com",
+        "first_name": "Sally",
+        "last_name": "Doe",
+        "username": "CoraxsChosen",
+        "faction": "RavenGuard",
+        "password": "password234",
+        "email_verified": false,
+        "last_ip": "1234.123.23",
+        "posts": {
+            "discussions": [
+                949392
+            ],
+            "social": [
+                4, 40020
+            ]
+        }
+    },
+    {
+        "user_id": 4,
+        "email": "fake4@fake.com",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "username": "FulgrimsGlory",
+        "faction": "Emperor's Child",
+        "password": "password35465",
+        "email_verified": true,
+        "last_ip": "1234.123.23",
+        "posts": {
+            "discussions": [
+                24, 893, 209184
+            ],
+            "social": [
+                5
+            ]
+        }
+    }
+]

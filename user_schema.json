@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$id": "user.schema.json",
+    "title": "Record of Users",
+    "description": "This document records the details of users in Adeptus Astartes",
+    "type": "object",
+    "properties": {
+        "user_id": {
+            "description": "A unique identifier for a user",
+            "type": "number"
+        },
+        "email": {
+            "description": "Email of the user",
+            "type": "string"
+        },
+        "first_name": {
+            "description": "First name of the user",
+            "type": "string"
+        },
+        "last_name": {
+            "description": "Last name of the user",
+            "type": "string"
+        },
+        "username": {
+            "description": "Web username of the user",
+            "type": "string"
+        },
+        "faction": {
+            "description": "Faction chosen by the user",
+            "type": "string"
+        },
+        "password": {
+            "description": "Password of the user",
+            "type": "string"
+        },
+        "email_verified": {
+            "description": "If user has verified their email",
+            "type": "boolean"
+        },
+        "last_ip": {
+            "description": "IP of the user's last login",
+            "type": "string"
+        },
+        "posts": {
+            "description": "Post ID's relevant to user",
+            "type": "object",
+            "properties": {
+                "discussions": {
+                    "type": "array",
+                    "items": {
+                        "description": "List of discussion post ID's",
+                        "type": "number"
+                    }
+                },
+                "social": {
+                    "type": "array",
+                    "items": {
+                        "description": "List of social post ID's",
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}
