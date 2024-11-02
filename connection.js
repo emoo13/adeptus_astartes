@@ -1,6 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-var username = encodeURIComponent("estellmoore13");
-var password = encodeURIComponent("Bringmeyou13!!");
+var username = encodeURIComponent("general_user");
+var password = encodeURIComponent("generalUser13");
 
 async function main() {
     var uri = `mongodb+srv://${username}:${password}@mycluster.4q5ij.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster`;
@@ -8,11 +8,10 @@ async function main() {
     console.log("Connecting")
     await client.connect();
     console.log("Connected")
-    // await listDatabases(client);
     try {
         await client.connect();
+        await listDatabases(client);
         await retrieveUsers(client);
-        // await listDatabases(client);
     
     } catch (e) {
         console.error(e);
@@ -36,6 +35,6 @@ async function listDatabases(client){
 async function retrieveUsers(client){
     const db = client.db("user_data");
     const collection = db.collection("users");
-    const result = await collection.find({}).toArray();
+    const result = await collection.find({first_name: "George"}).toArray();
     console.log(result);
 }
