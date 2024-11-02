@@ -10,8 +10,11 @@ async function main() {
     console.log("Connected")
     try {
         await client.connect();
+        // The following is just a temporary test for calling query functions
+        // for future integration on the website
         await listDatabases(client);
         await retrieveUsers(client);
+        await findUserPosts(client, 3);
     
     } catch (e) {
         console.error(e);
@@ -35,6 +38,15 @@ async function listDatabases(client){
 async function retrieveUsers(client){
     const db = client.db("user_data");
     const collection = db.collection("users");
-    const result = await collection.find({first_name: "George"}).toArray();
+    const result = await collection.find({}).toArray();
     console.log(result);
+    return result;
+}
+
+async function findUserPosts(client, user_id){
+    const db = client.db("user_data");
+    const collection = db.collection("social_posts");
+    const result = await collection.find({"author": user_id}).toArray();
+    console.log(result);
+    return result;
 }

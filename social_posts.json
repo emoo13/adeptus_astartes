@@ -1,0 +1,74 @@
+[
+    {
+        "post_id": 1,
+        "author": 3, 
+        "title": "Social Post",
+        "date_created": "2024-11-02T09:31:08.644316",
+        "text": "This is a social post about Warhammer",
+        "truncated": false,
+        "entities": {
+            "hashtags": [{
+                "text": "firstpost"
+            }],
+            "user_mentions": [],
+            "urls": [{
+                "url": "fake.url"
+            }],
+            "images": [{
+                "img_url": "img/adeptus-astartes-symbol.png"
+            }]
+        },
+        "source": "< a href=fake_source",
+        "likes_count": 101,
+        "dislikes_count": 1,
+        "responses": {
+            "comments": [{
+                "author": 1,
+                "text": "Welcome to the web app!",
+                "date_created": "2024-11-02T09:34:05.654353"
+                },
+                {
+                "author": 2,
+                "text": "Welcome newbie!",
+                "date_created": "2024-11-02T09:34:04.659493"
+                }]
+        },
+        "time_zone": "Mountain Standard"
+    },
+    {
+        "post_id": 1,
+        "author": 1, 
+        "title": "Social Post",
+        "date_created": "2024-11-02T09:31:08.644316",
+        "text": "More post for examples wee!!",
+        "truncated": false,
+        "entities": {
+            "hashtags": [{
+                "text": "example"
+            }],
+            "user_mentions": [],
+            "urls": [{
+                "url": "fake.url"
+            }],
+            "images": [{
+                "img_url": "img/adeptus-astartes-symbol.png"
+            }]
+        },
+        "source": "< a href=fake_source",
+        "likes_count": 101,
+        "dislikes_count": 1,
+        "responses": {
+            "comments": [{
+                "author": 1,
+                "text": "yay!",
+                "date_created": "2024-11-02T09:34:05.654353"
+                },
+                {
+                "author": 2,
+                "text": "what",
+                "date_created": "2024-11-02T09:34:04.659493"
+                }]
+        },
+        "time_zone": "Central Daylight"
+    }
+]
