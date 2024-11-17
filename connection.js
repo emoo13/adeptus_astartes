@@ -1,6 +1,8 @@
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb'); // Include ObjectId for MongoDB operations
 const path = require('path');
+const http = require('http');
+const WebSocket = require('ws');
 
 const app = express();
 const port = 3000;
@@ -21,8 +23,29 @@ async function connectToDatabase() {
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 
-// Routes
+// Serve index.html when accessing the root URL
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
+// HTTP Server and WebSocket Setup
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+  console.log('Client connected');
+  ws.on('close', () => console.log('Client disconnected'));
+});
+
+function broadcast(data) {
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
+}
+
+// Routes
 // List all databases
 app.get('/api/databases', async (req, res) => {
     try {
@@ -77,15 +100,23 @@ app.post('/api/like', async (req, res) => {
     try {
         const db = client.db("user_data");
         const result = await db.collection("social_posts").updateOne(
-            { post_id: postId },
+            { post_id: parseInt(postId, 10) }, // Ensure the post_id is handled as an integer
             { $inc: { likes_count: 1 } }
         );
-        res.json({ success: result.modifiedCount === 1 });
+        if (result.modifiedCount === 1) {
+            const updatedPost = await db.collection("social_posts").findOne({ post_id: parseInt(postId, 10) });
+            res.json({ success: true, updatedPost });
+            // Broadcast the updated like count to all clients
+            broadcast({ type: 'like', postId: updatedPost.post_id, likes_count: updatedPost.likes_count });
+        } else {
+            res.json({ success: false });
+        }
     } catch (err) {
         console.error('Error updating likes:', err);
         res.status(500).json({ success: false });
     }
 });
+
 
 // Add a follow for a user
 app.post('/api/follow', async (req, res) => {
@@ -122,7 +153,8 @@ app.post('/api/react', async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
     connectToDatabase().catch(console.error);
     console.log(`Server running at http://localhost:${port}`);
 });
+

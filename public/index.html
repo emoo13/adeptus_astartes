@@ -3,142 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="globals.css" />
-    <!-- <link rel="stylesheet" href="styleguide.css" /> -->
     <link rel="stylesheet" href="main.css" />
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Bakbak+One&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Anton&family=Antonio:wght@100..700&display=swap');
       @import url('https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap');
-
-    /* Additional styles for user and post lists */
-      ul {
-        list-style-type: none;
-        padding: 0;
-      }
-      li {
-        padding: 5px;
-        font-size: 18px;
-        color: #ffffff;
-      }
     </style>
-    <script>
-    // Fetch and display users
-    async function fetchUsers() {
-      try {
-        const response = await fetch('/api/users');
-        const users = await response.json();
-        const userList = document.getElementById('users-list');
-        userList.innerHTML = users
-          .map(user => `<li>${user.name} (${user.email})</li>`)
-          .join('');
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    }
-
-    // Fetch and display posts for a specific user (example: user ID = 3)
-    async function fetchUserPosts(userId) {
-      try {
-        const response = await fetch(`/api/posts/${userId}`);
-        const posts = await response.json();
-        const postsList = document.getElementById('posts-list');
-        postsList.innerHTML = posts
-          .map(post => `<li>${post.title}: ${post.content}</li>`)
-          .join('');
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    }
-
-    async function fetchFeed() {
-    try {
-        const response = await fetch('/api/feed');
-        const posts = await response.json();
-        const feedContainer = document.getElementById('feed-container');
-
-        feedContainer.innerHTML = posts.map(post => `
-            <div class="desktop social-cards">
-                <h3>${post.title}</h3>
-                <p>${post.text}</p>
-                <div>
-                    <img src="${post.entities.images[0].img_url}" alt="Post Image" />
-                </div>
-                <p><strong>Hashtags:</strong> ${post.entities.hashtags.map(h => `#${h.text}`).join(', ')}</p>
-                <div class="social-actions">
-                    <button onclick="likePost(${post.post_id})">👍 Like (${post.likes_count})</button>
-                    <button onclick="reactToPost(${post.post_id}, 'dislike')">👎 Dislike (${post.dislikes_count})</button>
-                </div>
-                <div class="comments">
-                    <h4>Comments:</h4>
-                    <ul>
-                        ${post.responses.comments.map(comment => `
-                            <li><strong>User ${comment.author}:</strong> ${comment.text}</li>
-                        `).join('')}
-                    </ul>
-                </div>
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('Error fetching feed:', error);
-    }
-}
-
-    async function likePost(postId) {
-        try {
-            const response = await fetch('/api/like', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ postId }) // Send `postId`
-            });
-            const result = await response.json();
-            if (result.success) {
-                console.log(`Post ${postId} liked successfully`);
-                fetchFeed(); // Refresh the feed after a like
-            } else {
-                console.error('Failed to like post:', result);
-            }
-        } catch (error) {
-            console.error('Error liking post:', error);
-        }
-    }
-
-    async function followUser(userId) {
-        // API call to follow user (to be implemented on the backend)
-        console.log(`Followed user ${userId}`);
-    }
-  
-    async function reactToPost(postId, reaction) {
-    try {
-        const response = await fetch('/api/react', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ post_id: postId, reaction })
-        });
-
-        const result = await response.json();
-        if (result.success) {
-            console.log(`${reaction} successful for post ${postId}`);
-            fetchFeed(); // Reload feed to show updated counts
-        } else {
-            console.error('Failed to update reaction');
-        }
-        } catch (error) {
-            console.error('Error updating reaction:', error);
-        }
-      }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchFeed(); // Load feed on page load
-    });
-
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchUsers(); // Load users on page load
-      fetchUserPosts(3); // Example: Fetch posts for user ID 3
-    });
-    </script>
   </head>
   <body>
     <div class="desktop">
@@ -163,25 +34,6 @@
             <img class="arrow-right-circle" src="assets/icons/arrow-icon-right.png" />
             <img class="arrow-left-circle" src="assets/icons/arrow-icon-left.png" />
 
-            <!-- User Lists-->>
-            <div class="feed-background">
-              <div class="feed-sec-background">
-                <h2 class="feed-label">User List</h2>
-                <ul id="users-list">Loading users...</ul>
-
-                <h2 class="feed-label">User Posts</h2>
-                <ul id="posts-list">Loading posts...</ul>
-              </div>
-            </div>
-
-            <!-- Static Feed Content -->>
-            <div class="feed-background">
-              <div class="feed-sec-background">
-                  <h2 class="feed-label">Feed</h2>
-                  <div id="feed-container" class="desktop">Loading feed...</div>
-              </div>
-          </div>
-        
             <!-- Middle Feed timeline -->
             <div class="feed-background">
               <div class="feed-sec-background">
@@ -212,8 +64,11 @@
                   
                   <div class="overlap-social">
                     <div class="like-rectangle">
-                      <input class="thumbs-up-2" type="image" src="assets/icons/thumbs-up.png" />
-                      <div class="likes-text-wrapper">1.1k</div>
+                      <div class="like-rectangle">
+                        <input class="thumbs-up-2 like-button" type="image" src="assets/icons/thumbs-up.png" data-like-id="1" />
+                        <div class="likes-text-wrapper" id="likes-1">95</div>
+                      </div>
+                      
                     </div>
 
                     <div class="thumbs-down-wrapper">
@@ -242,13 +97,15 @@
                   <input class="x-icon" type="image" src="assets/icons/x-icon.png" />
                   <p class="post-text">
                     <span class="span"
-                      >Borem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                      <p class="post-text"></span>
+                      >Borem ipsum dolor sit amet, consectetur adipiscing elit.</span>
                   </p>
                   <div class="overlap-social">
                     <div class="like-rectangle">
-                      <input class="thumbs-up-2" type="image" src="assets/icons/thumbs-up.png" />
-                      <div class="likes-text-wrapper">1.1k</div>
+                      <div class="like-rectangle">
+                        <input class="thumbs-up-2 like-button" type="image" src="assets/icons/thumbs-up.png" data-like-id="2" />
+                        <div class="likes-text-wrapper" id="likes-2">95</div>
+                      </div>
+                      
                     </div>
 
                     <div class="thumbs-down-wrapper">
@@ -275,13 +132,15 @@
                   <input class="x-icon" type="image" src="assets/icons/x-icon.png" />
                   <p class="post-text">
                     <span class="span"
-                      >This website will be infinitely scrolling, much like other social media sites</p>
-                      <p class="post-text"></span>
+                      >This website will be infinitely scrolling, much like other social media sites</span>
                   </p>
                   <div class="overlap-social">
                     <div class="like-rectangle">
-                      <input class="thumbs-up-2" type="image" src="assets/icons/thumbs-up.png" />
-                      <div class="likes-text-wrapper">0</div>
+                      <div class="like-rectangle">
+                        <input class="thumbs-up-2 like-button" type="image" src="assets/icons/thumbs-up.png" data-like-id="3" />
+                        <div class="likes-text-wrapper" id="likes-3">95</div>
+                      </div>
+                      
                     </div>
 
                     <div class="thumbs-down-wrapper">
@@ -465,5 +324,13 @@
       <img class="profile-pic-icon" src="assets/img/chibi.png" />
       
     </div>
+
+
+    <!-- Debug Log Area -->
+    <div id="debug-log" style="background-color: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc; max-height: 200px; overflow-y: scroll;">
+      <strong>Debug Log:</strong>
+      <div id="debug-content"></div>
+    </div>
+    <script src="client.js"></script>
   </body>
 </html>

@@ -1222,3 +1222,37 @@ body {
   cursor: pointer;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
 }
+
+/* Add these styles to visually indicate updates */
+.desktop .live-update {
+  color: #ffcc00; /* Highlight live updates with a yellow color */
+  font-weight: bold;
+}
+
+.desktop .likes-count,
+.desktop .comments-count {
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Adding hover styles to buttons to improve interactivity */
+.desktop .like-button:hover,
+.desktop .comment-button:hover {
+  background-color: #567cc1;
+}
+
+/* Optional animation for updated elements */
+.desktop .live-update {
+  animation: pulse 1s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
